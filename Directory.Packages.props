@@ -1,0 +1,50 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Avalonia.Android" Version="12.1.4" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.4" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.4" />
+    <PackageVersion Include="ChsBuffer.Angle.Static" Version="2.1.27548.1" />
+    <PackageVersion Include="ChsBuffer.Avalonia.Native.Static" Version="12.1.4.1" />
+    <PackageVersion Include="ChsBuffer.SkiaSharp.Static" Version="4.153.1.1" />
+    <PackageVersion Include="FluentIcons.Avalonia" Version="2.1.344" />
+    <PackageVersion Include="HarfBuzzSharp" Version="14.2.1.301" />
+    <PackageVersion Include="HarfBuzzSharp.NativeAssets.Linux" Version="14.2.1.301" />
+    <PackageVersion Include="SkiaSharp" Version="4.153.1" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.153.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="ReactiveUI" Version="26.0.1" />
+    <PackageVersion Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection" Version="12.1.6" />
+    <PackageVersion Include="Splat.Serilog" Version="21.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Serilog" Version="4.4.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Async" Version="2.1.0" />
+    <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="DTLS" Version="0.5.1" />
+    <PackageVersion Include="Dns.Net" Version="0.3.0" />
+    <PackageVersion Include="dotnetCampus.SourceLocalizations" Version="0.1.1-alpha.6" />
+    <PackageVersion Include="DotNet.ReproducibleBuilds" Version="2.0.5" />
+    <PackageVersion Include="HMBSbige.UpdateChecker" Version="11.0.0" />
+    <PackageVersion Include="MinVer" Version="8.0.0" />
+    <PackageVersion Include="NuGet.Versioning" Version="7.9.0" />
+    <PackageVersion Include="Socks5" Version="1.1.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.57.2" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.13" />
+    <PackageVersion Include="ThisAssembly.AssemblyInfo" Version="2.1.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="TUnit" Version="1.75.0" />
+  </ItemGroup>
+</Project>

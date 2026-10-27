@@ -1,0 +1,75 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:NatTypeTester.ViewModels;assembly=NatTypeTester.ViewModels"
+    xmlns:localization="using:NatTypeTester.Domain.Shared.Localization"
+    xmlns:designViewModels="clr-namespace:NatTypeTester.Views.DesignViewModels"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    mc:Ignorable="d"
+    d:DesignWidth="380" d:DesignHeight="500"
+    x:Class="NatTypeTester.Views.Views.RFC3489View"
+    x:DataType="vm:RFC3489ViewModel">
+    <Design.DataContext>
+        <designViewModels:DesignRFC3489ViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom"
+                Margin="8,4,8,8"
+                CornerRadius="4">
+            <Button
+                    Classes="accent"
+                    HorizontalAlignment="Stretch"
+                    Padding="8"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding TestClassicNatTypeCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <ic:FluentIcon Icon="Play" IconVariant="Regular" />
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Test, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                </StackPanel>
+            </Button>
+        </Border>
+
+        <ScrollViewer>
+            <StackPanel Margin="8" Spacing="8">
+                <Border Background="{DynamicResource NotificationCardWarningBackgroundBrush}"
+                        BorderBrush="{DynamicResource SystemControlTransientBorderBrush}"
+                        BorderThickness="1" CornerRadius="8" Padding="10">
+                    <DockPanel>
+                        <ic:FluentIcon Icon="Warning" IconVariant="Color" DockPanel.Dock="Left" Margin="0,0,8,0" VerticalAlignment="Top" />
+                        <TextBlock
+                                   Text="{Binding RFC3489Warning, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" />
+                    </DockPanel>
+                </Border>
+
+                <StackPanel Spacing="3">
+                    <TextBlock
+                               Text="{Binding NatType, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <TextBox IsReadOnly="True" Text="{Binding NatType, Mode=OneWay}" />
+                </StackPanel>
+
+                <StackPanel Spacing="3" IsEnabled="{Binding !IsTesting}">
+                    <TextBlock
+                               Text="{Binding LocalEnd, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <ComboBox IsEditable="True"
+                              ItemsSource="{Binding LocalEndPoints}"
+                              PlaceholderText="{Binding LocalEndPlaceholder, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                              Text="{Binding LocalEnd}"
+                              HorizontalAlignment="Stretch" />
+                </StackPanel>
+
+                <StackPanel Spacing="3">
+                    <TextBlock
+                               Text="{Binding PublicEnd, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <TextBox IsReadOnly="True" Text="{Binding PublicEndPoint, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+
+</UserControl>

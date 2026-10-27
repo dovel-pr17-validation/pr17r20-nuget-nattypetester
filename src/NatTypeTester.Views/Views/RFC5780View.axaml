@@ -1,0 +1,169 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:NatTypeTester.ViewModels;assembly=NatTypeTester.ViewModels"
+    xmlns:localization="using:NatTypeTester.Domain.Shared.Localization"
+    xmlns:designViewModels="clr-namespace:NatTypeTester.Views.DesignViewModels"
+    xmlns:stun="clr-namespace:STUN.Enums;assembly=STUN"
+    xmlns:shared="clr-namespace:NatTypeTester.Domain.Shared;assembly=NatTypeTester.Domain.Shared"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    mc:Ignorable="d"
+    d:DesignWidth="380" d:DesignHeight="500"
+    x:Class="NatTypeTester.Views.Views.RFC5780View"
+    x:DataType="vm:RFC5780ViewModel">
+    <Design.DataContext>
+        <designViewModels:DesignRFC5780ViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom"
+                Margin="8,4,8,8"
+                CornerRadius="4">
+            <Panel>
+                <Button
+                        Classes="accent"
+                        HorizontalAlignment="Stretch"
+                        Padding="8"
+                        HorizontalContentAlignment="Center"
+                        IsVisible="{Binding !IsTesting}"
+                        Command="{Binding DiscoveryNatTypeCommand}"
+                        CommandParameter="{x:Static shared:StunTestType.Combining}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <ic:FluentIcon Icon="Play" IconVariant="Regular" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding Test, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                        Classes="accent"
+                        HorizontalAlignment="Stretch"
+                        Padding="8"
+                        HorizontalContentAlignment="Center"
+                        IsVisible="{Binding IsTesting}"
+                        Command="{Binding CancelTestCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <ic:FluentIcon Icon="Stop" IconVariant="Regular" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding Cancel, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    </StackPanel>
+                </Button>
+            </Panel>
+        </Border>
+
+        <ScrollViewer>
+            <StackPanel Margin="8" Spacing="8">
+                <StackPanel Orientation="Horizontal" Spacing="10" IsEnabled="{Binding !IsTesting}">
+                    <RadioButton Content="UDP" GroupName="TransportType"
+                                 IsChecked="{Binding TransportType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static stun:TransportType.Udp}}" />
+                    <RadioButton Content="TCP" GroupName="TransportType"
+                                 IsChecked="{Binding TransportType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static stun:TransportType.Tcp}}" />
+                    <RadioButton Content="TLS" GroupName="TransportType"
+                                 IsChecked="{Binding TransportType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static stun:TransportType.Tls}}" />
+                    <RadioButton Content="DTLS" GroupName="TransportType"
+                                 IsChecked="{Binding TransportType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static stun:TransportType.Dtls}}" />
+                </StackPanel>
+
+                <StackPanel Spacing="3">
+                    <TextBlock
+                               Text="{Binding BindingTest, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <Grid ColumnDefinitions="*,4,Auto">
+                        <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding BindingTestResult, Mode=OneWay}" />
+                        <Panel Grid.Column="2">
+                            <Button
+                                    Classes="accent"
+                                    ToolTip.Tip="{Binding BindingTest, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{Binding !IsTesting}"
+                                    Command="{Binding DiscoveryNatTypeCommand}"
+                                    CommandParameter="{x:Static shared:StunTestType.Binding}">
+                                <ic:FluentIcon Icon="Play" IconVariant="Regular" />
+                            </Button>
+                            <Button Classes="accent"
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{Binding IsTesting}"
+                                    Command="{Binding CancelTestCommand}">
+                                <ic:FluentIcon Icon="Stop" IconVariant="Regular" />
+                            </Button>
+                        </Panel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Spacing="3">
+                    <TextBlock
+                               Text="{Binding MappingBehavior, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <Grid ColumnDefinitions="*,4,Auto">
+                        <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding MappingBehavior, Mode=OneWay}" />
+                        <Panel Grid.Column="2">
+                            <Button
+                                    Classes="accent"
+                                    ToolTip.Tip="{Binding MappingBehavior, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{Binding !IsTesting}"
+                                    Command="{Binding DiscoveryNatTypeCommand}"
+                                    CommandParameter="{x:Static shared:StunTestType.Mapping}">
+                                <ic:FluentIcon Icon="Play" IconVariant="Regular" />
+                            </Button>
+                            <Button Classes="accent"
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{Binding IsTesting}"
+                                    Command="{Binding CancelTestCommand}">
+                                <ic:FluentIcon Icon="Stop" IconVariant="Regular" />
+                            </Button>
+                        </Panel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Spacing="3"
+                            IsVisible="{Binding TransportType, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static stun:TransportType.Udp}}">
+                    <TextBlock
+                               Text="{Binding FilteringBehavior, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <Grid ColumnDefinitions="*,4,Auto">
+                        <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding FilteringBehavior, Mode=OneWay}" />
+                        <Panel Grid.Column="2">
+                            <Button
+                                    Classes="accent"
+                                    ToolTip.Tip="{Binding FilteringBehavior, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{Binding !IsTesting}"
+                                    Command="{Binding DiscoveryNatTypeCommand}"
+                                    CommandParameter="{x:Static shared:StunTestType.Filtering}">
+                                <ic:FluentIcon Icon="Play" IconVariant="Regular" />
+                            </Button>
+                            <Button Classes="accent"
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{Binding IsTesting}"
+                                    Command="{Binding CancelTestCommand}">
+                                <ic:FluentIcon Icon="Stop" IconVariant="Regular" />
+                            </Button>
+                        </Panel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Spacing="3" IsEnabled="{Binding !IsTesting}">
+                    <TextBlock
+                               Text="{Binding LocalEnd, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <ComboBox IsEditable="True"
+                              ItemsSource="{Binding LocalEndPoints}"
+                              PlaceholderText="{Binding LocalEndPlaceholder, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                              Text="{Binding LocalEnd}"
+                              HorizontalAlignment="Stretch" />
+                </StackPanel>
+
+                <StackPanel Spacing="3">
+                    <TextBlock
+                               Text="{Binding PublicEnd, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                    <TextBox IsReadOnly="True" Text="{Binding PublicEndPoint, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+
+</UserControl>

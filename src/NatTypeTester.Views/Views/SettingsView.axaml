@@ -1,0 +1,171 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:NatTypeTester.ViewModels;assembly=NatTypeTester.ViewModels"
+    xmlns:localization="using:NatTypeTester.Domain.Shared.Localization"
+    xmlns:designViewModels="clr-namespace:NatTypeTester.Views.DesignViewModels"
+    xmlns:stun="clr-namespace:STUN.Enums;assembly=STUN"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    mc:Ignorable="d"
+    d:DesignWidth="380" d:DesignHeight="600"
+    x:Class="NatTypeTester.Views.Views.SettingsView"
+    x:DataType="vm:SettingsViewModel"
+    IsEnabled="{Binding IsInitialized}">
+    <Design.DataContext>
+        <designViewModels:DesignSettingsViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <Style Selector="GroupBox.settings-card">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style Selector="GroupBox.settings-card > StackPanel">
+            <Setter Property="Spacing" Value="8" />
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel Margin="8" Spacing="10">
+            <GroupBox Classes="settings-card"
+                      Header="{Binding ConfigDirectory, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                      IsVisible="{Binding Application.CanOpenConfigDirectory, Mode=OneTime}">
+                <StackPanel>
+                    <Button Command="{Binding Application.OpenConfigDirectoryCommand}"
+                            HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <ic:FluentIcon Icon="Folder" IconVariant="Regular" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding OpenConfigDirectory, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Classes="settings-card"
+                      Header="{Binding Update, Source={x:Static localization:NatTypeTesterLanguage.Current}}">
+                <StackPanel>
+                    <StackPanel Spacing="8">
+                        <StackPanel Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <TextBlock
+                                    Text="{Binding CurrentVersion, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                                <TextBlock Text="{Binding Update.CurrentVersion}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="4"
+                                        IsVisible="{Binding Update.LatestVersion, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <TextBlock
+                                    Text="{Binding LatestVersion, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                                <TextBlock Text="{Binding Update.LatestVersion}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Command="{Binding Update.CheckUpdateCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <ic:FluentIcon Icon="ArrowSync" IconVariant="Color" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding CheckUpdate, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding Update.OpenHomepageCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <ic:FluentIcon Icon="Open" IconVariant="Regular" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding OpenHomepage, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <CheckBox IsChecked="{Binding Update.IncludePreRelease}"
+                              Content="{Binding IncludePreRelease, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+
+                    <CheckBox x:Name="AutoCheckUpdateCheckBox" IsChecked="{Binding Update.AutoCheckUpdate}"
+                              Content="{Binding AutoCheckUpdate, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="24,0,0,0"
+                                IsEnabled="{Binding #AutoCheckUpdateCheckBox.IsChecked}">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding CheckUpdateInterval, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                        <NumericUpDown Value="{Binding Update.CheckUpdateIntervalHours}" Minimum="0.1" Maximum="720"
+                                       Increment="1" FormatString="0.#" Width="90"
+                                       ShowButtonSpinner="False" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Classes="settings-card"
+                      Header="{Binding Proxy, Source={x:Static localization:NatTypeTesterLanguage.Current}}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="20">
+                        <RadioButton GroupName="ProxyType"
+                                     Content="{Binding NoProxy, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                     IsChecked="{Binding Connection.ProxyType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static stun:ProxyType.Plain}}" />
+                        <RadioButton GroupName="ProxyType"
+                                     Content="{Binding SOCKS5Proxy, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                     IsChecked="{Binding Connection.ProxyType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static stun:ProxyType.Socks5}}" />
+                    </StackPanel>
+
+                    <StackPanel IsVisible="{Binding Connection.ProxyType, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static stun:ProxyType.Plain}}" Spacing="8">
+                        <StackPanel Spacing="3">
+                            <TextBlock
+                                Text="{Binding ProxyServer, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                            <TextBox Text="{Binding Connection.ProxyServer}" />
+                        </StackPanel>
+                        <StackPanel Spacing="3">
+                            <TextBlock
+                                Text="{Binding ProxyUsername, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                            <TextBox Text="{Binding Connection.ProxyUser}" />
+                        </StackPanel>
+                        <StackPanel Spacing="3">
+                            <TextBlock
+                                Text="{Binding ProxyPassword, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                            <TextBox Text="{Binding Connection.ProxyPassword}" PasswordChar="•" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <CheckBox IsChecked="{Binding Connection.SkipCertificateValidation}"
+                              Content="{Binding SkipCertificateValidation, Source={x:Static localization:NatTypeTesterLanguage.Current}}" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Classes="settings-card"
+                      Header="{Binding StunServerList, Source={x:Static localization:NatTypeTesterLanguage.Current}}">
+                <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                        <TextBox Grid.Column="0" Text="{Binding StunServer.StunServerListUri}" />
+                        <Button Grid.Column="1"
+                                Command="{Binding StunServer.LoadStunServerListCommand}"
+                                ToolTip.Tip="{Binding LoadStunServerList, Source={x:Static localization:NatTypeTesterLanguage.Current}}">
+                            <ic:FluentIcon Icon="ArrowDownload" IconVariant="Regular" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Classes="settings-card"
+                      Header="{Binding Language, Source={x:Static localization:NatTypeTesterLanguage.Current}}">
+                <StackPanel>
+                    <ComboBox ItemsSource="{Binding Application.Languages}"
+                              SelectedItem="{Binding Application.SelectedLanguage}"
+                              MinWidth="150">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LanguageOptionViewModel">
+                                <Grid>
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               IsVisible="{Binding CultureName, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    <TextBlock Text="{Binding FollowSystem, Source={x:Static localization:NatTypeTesterLanguage.Current}}"
+                                               IsVisible="{Binding CultureName, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

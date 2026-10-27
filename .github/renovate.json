@@ -1,0 +1,40 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assignees": [
+    "HMBSbige"
+  ],
+  "extends": [
+    "config:recommended",
+    ":configMigration",
+    ":automergeBranch",
+    ":automergeDigest",
+    ":automergeMinor"
+  ],
+  "schedule": [
+    "* 0-3 8-14 * 3"
+  ],
+  "packageRules": [
+    {
+      "matchSourceUrls": [
+        "https://github.com/reactiveui/**"
+      ],
+      "groupName": "ReactiveUI",
+      "separateMajorMinor": false
+    },
+    {
+      "matchPackageNames": [
+        "ChsBuffer.Avalonia.Native.Static"
+      ],
+      "groupName": "avalonia monorepo"
+    },
+    {
+      "matchPackageNames": [
+        "ChsBuffer.SkiaSharp.Static"
+      ],
+      "groupName": "skiasharp monorepo"
+    }
+  ],
+  "labels": [
+    "Automatic"
+  ]
+}

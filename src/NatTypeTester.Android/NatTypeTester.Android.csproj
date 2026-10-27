@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishSingleFile>false</PublishSingleFile>
+    <TrimMode>full</TrimMode>
+    <ApplicationId>io.github.hmbsbige.nattypetester</ApplicationId>
+    <AndroidPackageFormats>apk</AndroidPackageFormats>
+    <AndroidUseApkSigner>true</AndroidUseApkSigner>
+    <AndroidEnableMarshalMethods>false</AndroidEnableMarshalMethods>
+  </PropertyGroup>
+
+  <!-- versionName = MinVer version, versionCode = git commit count (auto-increments with every commit) -->
+  <Target Name="SetAndroidVersion" BeforeTargets="_GetAndroidPackageName" DependsOnTargets="MinVer">
+    <Exec Command="git rev-list --count HEAD" ConsoleToMSBuild="true" StandardOutputImportance="Low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="ApplicationVersion" />
+    </Exec>
+    <PropertyGroup>
+      <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+    </PropertyGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Android" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NatTypeTester.Views\NatTypeTester.Views.csproj" />
+  </ItemGroup>
+
+</Project>

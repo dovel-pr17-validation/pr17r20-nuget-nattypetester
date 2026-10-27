@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NatTypeTester.Application.Contracts\NatTypeTester.Application.Contracts.csproj" />
+    <ProjectReference Include="..\NatTypeTester.Domain\NatTypeTester.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
